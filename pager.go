@@ -87,6 +87,7 @@ func (this *Page) Show() string {
 	buf.WriteString(strconv.Itoa(this.PageNo))
 	buf.WriteString("/")
 	buf.WriteString(strconv.Itoa(this.TotalPage))
+	buf.WriteString("</li>")
 	buf.WriteString("</ul>")
 	return buf.String()
 }
