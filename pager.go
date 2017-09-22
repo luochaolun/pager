@@ -1,3 +1,6 @@
+/*
+ * 参照http://blog.csdn.net/shachao888/article/details/53536098
+ */
 package pager
 
 import (
