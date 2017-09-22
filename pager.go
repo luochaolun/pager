@@ -66,15 +66,16 @@ func (this *Page) Show() string {
 	}
 	for i := 1; i <= this.TotalPage; i++ {
 		if i == this.PageNo {
-			buf.WriteString("<li class=\"active\"><a href=\"javascript:void(0);\">")
+			buf.WriteString("<li class=\"active\">")
 			buf.WriteString(strconv.Itoa(i))
 		} else {
 			buf.WriteString("<li><a href=\"")
 			buf.WriteString(this.getUrl(i))
 			buf.WriteString("\">")
 			buf.WriteString(strconv.Itoa(i))
+			buf.WriteString("</a>")
 		}
-		buf.WriteString("</a></li>")
+		buf.WriteString("</li>")
 	}
 
 	if this.PageNo < this.TotalPage {
@@ -83,7 +84,7 @@ func (this *Page) Show() string {
 		buf.WriteString(this.getUrl(nextPage))
 		buf.WriteString("\">下一页</a></li>")
 	}
-	buf.WriteString("<li><a href=\"javascript:void(0);\">")
+	buf.WriteString("<li>")
 	buf.WriteString(strconv.Itoa(this.PageNo))
 	buf.WriteString("/")
 	buf.WriteString(strconv.Itoa(this.TotalPage))
