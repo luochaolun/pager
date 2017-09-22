@@ -84,11 +84,11 @@ func (this *Page) Show() string {
 		buf.WriteString(this.getUrl(nextPage))
 		buf.WriteString("\">下一页</a></li>")
 	}
-	buf.WriteString("<li>")
+	/*buf.WriteString("<li>")
 	buf.WriteString(strconv.Itoa(this.PageNo))
 	buf.WriteString("/")
 	buf.WriteString(strconv.Itoa(this.TotalPage))
-	buf.WriteString("</li>")
+	buf.WriteString("</li>")*/
 	buf.WriteString("</ul>")
 	return buf.String()
 }
