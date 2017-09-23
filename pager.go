@@ -51,7 +51,7 @@ func (this *Page) getPageStartEnd() (int, int) {
 		start int
 		end   int
 	)
-	mid := int(math.Floor(float32(this.ShowPageCount) / 2))
+	mid := int(math.Floor(float64(this.ShowPageCount) / 2))
 	if this.ShowPageCount % 2 {
 		start = this.PageNo - mid
 		end = this.PageNo + mid
