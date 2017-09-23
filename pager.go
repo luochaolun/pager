@@ -93,42 +93,42 @@ func (this *Page) Show() string {
 	this.getPageCount()
 	start, end := this.getPageStartEnd()
 	var buf bytes.Buffer
-	buf.WriteString("<ul class=\"pagination\">")
+	buf.WriteString("<div class=\"pages\">")
 	if this.PageNo > 1 {
-		buf.WriteString("<li><a href=\"")
+		buf.WriteString("<a class=\"first\" href=\"")
 		buf.WriteString(this.getUrl(1))
-		buf.WriteString("\">首页</a></li>")
-		buf.WriteString("<li><a href=\"")
+		buf.WriteString("\">首页</a>")
+		buf.WriteString("<a class=\"prev\" href=\"")
 		buf.WriteString(this.getUrl(this.PageNo - 1))
-		buf.WriteString("\">上一页</a></li>")
+		buf.WriteString("\">上一页</a>")
 	}
 	for i := start; i <= end; i++ {
 		if i == this.PageNo {
-			buf.WriteString("<li class=\"active\">")
+			buf.WriteString("<span class=\"current\">")
 			buf.WriteString(strconv.Itoa(i))
+			buf.WriteString("</span>")
 		} else {
-			buf.WriteString("<li><a href=\"")
+			buf.WriteString("<a class=\"num\" href=\"")
 			buf.WriteString(this.getUrl(i))
 			buf.WriteString("\">")
 			buf.WriteString(strconv.Itoa(i))
 			buf.WriteString("</a>")
 		}
-		buf.WriteString("</li>")
 	}
 
 	if this.PageNo < this.TotalPage {
-		buf.WriteString("<li><a href=\"")
+		buf.WriteString("<a class=\"next\" href=\"")
 		buf.WriteString(this.getUrl(this.PageNo + 1))
-		buf.WriteString("\">下一页</a></li>")
-		buf.WriteString("<li><a href=\"")
+		buf.WriteString("\">下一页</a>")
+		buf.WriteString("<a class=\"end\" href=\"")
 		buf.WriteString(this.getUrl(this.TotalPage))
-		buf.WriteString("\">尾页</a></li>")
+		buf.WriteString("\">尾页</a>")
 	}
-	/*buf.WriteString("<li>")
+	/*buf.WriteString("<span>")
 	buf.WriteString(strconv.Itoa(this.PageNo))
 	buf.WriteString("/")
 	buf.WriteString(strconv.Itoa(this.TotalPage))
-	buf.WriteString("</li>")*/
-	buf.WriteString("</ul>")
+	buf.WriteString("</span>")*/
+	buf.WriteString("</div>")
 	return buf.String()
 }
