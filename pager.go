@@ -5,22 +5,24 @@ package pager
 
 import (
 	"bytes"
+	"math"
 	"strconv"
 	"strings"
 )
 
 type Page struct {
-	PageNo     int    //当前页
-	PageSize   int    //每页多少数据
-	TotalPage  int    //总共多少页
-	TotalCount int    //总共多少条数据
-	FirstPage  int    //第一页
-	LastPage   int    //最后一页
-	Url        string //链接
+	PageNo        int    //当前页
+	PageSize      int    //每页多少数据
+	TotalPage     int    //总共多少页
+	TotalCount    int    //总共多少条数据
+	ShowPageCount int    //显示多少个页码
+	FirstPage     int    //第一页
+	LastPage      int    //最后一页
+	Url           string //链接
 }
 
-func NewPage(PageNo int, PageSize int, TotalCount int, Url string) Page {
-	return Page{PageNo: PageNo, PageSize: PageSize, TotalCount: TotalCount, Url: Url}
+func NewPage(PageNo int, PageSize int, TotalCount int, ShowPageCount int, Url string) Page {
+	return Page{PageNo: PageNo, PageSize: PageSize, TotalCount: TotalCount, ShowPageCount: ShowPageCount, Url: Url}
 }
 
 //计算总页数
@@ -35,9 +37,41 @@ func (this *Page) getPageCount() {
 		tpint += 1
 	}
 	this.TotalPage = int(tpint)
+	if this.ShowPageCount > this.TotalPage {
+		this.ShowPageCount = this.TotalPage
+	}
 	this.LastPage = int(tpint)
 	this.FirstPage = 1
 	this.execUrl()
+}
+
+//计算起始页码
+func (this *Page) getPageStartEnd() (int, int) {
+	var (
+		start int
+		end   int
+	)
+	mid := int(math.Floor(float32(this.ShowPageCount) / 2))
+	if this.ShowPageCount % 2 {
+		start = this.PageNo - mid
+		end = this.PageNo + mid
+	} else {
+		start = this.PageNo - mid
+		end = this.PageNo + mid - 1
+	}
+
+	if start < 1 {
+		start = 1
+		end = this.ShowPageCount
+	}
+
+	if end > this.TotalPage {
+		offset := end - this.TotalPage
+		end = this.TotalPage
+		start = start - offset
+	}
+
+	return start, end
 }
 
 //格式化URL地址
@@ -57,6 +91,7 @@ func (this *Page) getUrl(page int) string {
 //
 func (this *Page) Show() string {
 	this.getPageCount()
+	start, end := this.getPageStartEnd()
 	var buf bytes.Buffer
 	buf.WriteString("<ul class=\"pagination\">")
 	if this.PageNo > 1 {
@@ -64,7 +99,7 @@ func (this *Page) Show() string {
 		buf.WriteString(this.getUrl(1))
 		buf.WriteString("\">上一页</a></li>")
 	}
-	for i := 1; i <= this.TotalPage; i++ {
+	for i := start; i <= end; i++ {
 		if i == this.PageNo {
 			buf.WriteString("<li class=\"active\">")
 			buf.WriteString(strconv.Itoa(i))
